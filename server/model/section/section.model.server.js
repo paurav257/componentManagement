@@ -26,7 +26,7 @@ module.exports = function () {
         return model.moduleModel
           .findModuleById(moduleId)
           .then(function (_module) {
-            _module.sections.push(section);
+            _module.sections.push(section._id);
             section._module = _module._id;
             _module.save();
             section.save();
