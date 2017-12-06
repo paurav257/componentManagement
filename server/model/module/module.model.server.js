@@ -67,4 +67,5 @@ module.exports = function () {
   function findAllModule() {
     return ModuleModel.find({});
   }
+
 };
