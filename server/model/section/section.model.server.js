@@ -44,18 +44,18 @@ module.exports = function () {
   }
 
   function getSectionsRecursively(numberOfSections,
-                                  sectionsOfPage, sectionCollectionForModule) {
+                                  sectionsOfModule, sectionCollectionForModule) {
     if (numberOfSections === 0) {
       return sectionCollectionForModule;
     }
 
     return SectionModel
-      .findById(sectionsOfPage.shift())
+      .findSectionById(sectionsOfModule.shift())
       .select('-__v')
       .then(function (section) {
         sectionCollectionForModule.push(section);
         return getSectionsRecursively(--numberOfSections,
-          sectionsOfPage, sectionCollectionForModule);
+          sectionsOfModule, sectionCollectionForModule);
       }, function (err) {
         return err;
       });
@@ -65,11 +65,11 @@ module.exports = function () {
     return model.moduleModel
       .findModuleById(moduleId)
       .then(function (_module) {
-        var sectionsOfPage = _module.sections;
-        var numberOfSections = sectionsOfPage.length;
+        var sectionsOfModule = _module.sections;
+        var numberOfSections = sectionsOfModule.length;
         var sectionCollectionForModule = [];
         return getSectionsRecursively(numberOfSections,
-          sectionsOfPage, sectionCollectionForModule);
+          sectionsOfModule, sectionCollectionForModule);
       }, function (err) {
         return err;
       })
@@ -94,7 +94,15 @@ module.exports = function () {
   }
 
   function reorderSection(moduleId, start, end) {
-
+    return model.moduleModel
+      .findModuleById(moduleId)
+      .then(function (module) {
+        module.sections.splice(end, 0, module.sections.splice(start, 1)[0]);
+        module.save();
+        return 200;
+      }, function (err) {
+        return err;
+      });
   }
 
   function deleteSectionAndChildren(sectionId) {

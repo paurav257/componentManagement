@@ -8,11 +8,20 @@ import { Routing } from './app.routing';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { TestService } from './services/test.service.client';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { RegisterComponent } from './components/user/register/register.component';
 import { AuthGuard } from './services/auth-guard.service';
 import { SharedService } from './services/shared.service';
 import { UserService } from './services/user.service.client';
+import { ModuleNewComponent } from './components/module/module-new/module-new.component';
+import { ModuleEditComponent } from './components/module/module-edit/module-edit.component';
+import { SectionNewComponent } from './components/section/section-new/section-new.component';
+import { SectionEditComponent } from './components/section/section-edit/section-edit.component';
+import { ModuleService } from './services/module.service.client';
+import { SectionService } from './services/section.service.client';
+import { WidgetService } from './services/widget.service.client';
+import { ComponentNewComponent } from './components/component/component-new/component-new.component';
+import { ComponentEditComponent } from './components/component/component-edit/component-edit.component';
 
 @NgModule({
   // Declare components here
@@ -21,7 +30,13 @@ import { UserService } from './services/user.service.client';
     HomeComponent,
     TestComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ModuleNewComponent,
+    ModuleEditComponent,
+    SectionNewComponent,
+    SectionEditComponent,
+    ComponentNewComponent,
+    ComponentEditComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +45,7 @@ import { UserService } from './services/user.service.client';
     Routing
   ],
   // Client Side services here
-  providers: [TestService, AuthGuard, SharedService, UserService],
+  providers: [TestService, AuthGuard, SharedService, UserService, ModuleService, SectionService, WidgetService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

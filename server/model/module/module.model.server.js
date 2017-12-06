@@ -6,10 +6,11 @@ module.exports = function () {
 
   ModuleModel.setModel = setModel;
   ModuleModel.createModule = createModule;
+  ModuleModel.findAllModulesForComponent = findAllModulesForComponent;
   ModuleModel.findModuleById = findModuleById;
+  ModuleModel.reorderModule = reorderModule;
   ModuleModel.updateModule = updateModule;
   ModuleModel.deleteModule = deleteModule;
-  ModuleModel.findAllModule = findAllModule;
 
   return ModuleModel;
 
@@ -19,6 +20,38 @@ module.exports = function () {
 
   function createModule(_module){
     return ModuleModel.create(_module);
+  }
+
+  function getSectionsRecursively(numberOfModules,
+                                  modulesOfComponent, moduleCollectionForComponent) {
+    if (numberOfModules === 0) {
+      return moduleCollectionForComponent;
+    }
+
+    return ModuleModel
+      .findModuleById(modulesOfComponent.shift())
+      .select('-__v')
+      .then(function (section) {
+        moduleCollectionForComponent.push(section);
+        return getSectionsRecursively(--numberOfModules,
+          modulesOfComponent, moduleCollectionForComponent);
+      }, function (err) {
+        return err;
+      });
+  }
+
+  function findAllModulesForComponent(componentId) {
+    return model.componentModel
+      .findComponentById(componentId)
+      .then(function (_component) {
+        var modulesOfComponent = _component.modules;
+        var numberOfModules = modulesOfComponent.length;
+        var moduleCollectionForComponent = [];
+        return getSectionsRecursively(numberOfModules,
+          modulesOfComponent, moduleCollectionForComponent);
+      }, function (err) {
+        return err;
+      })
   }
 
   function findModuleById(moduleId) {
@@ -64,8 +97,15 @@ module.exports = function () {
       });
   }
 
-  function findAllModule() {
-    return ModuleModel.find({});
+  function reorderModule(componentId, start, end) {
+    return model.componentModel
+      .findComponentById(componentId)
+      .then(function (component) {
+        component.modules.splice(end, 0, component.modules.splice(start, 1)[0]);
+        component.save();
+        return 200;
+      }, function (err) {
+        return err;
+      });
   }
-
 };
