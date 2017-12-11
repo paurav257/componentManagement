@@ -46,3 +46,46 @@ a {
   right: 15px;
   top: 0px;
 }
+
+.ty-10 {
+  margin-bottom: 10px;
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+
+.right-margin-fix {
+  margin-right: -15px;
+}
+
+.left-margin-fix {
+  margin-left: -15px;
+}
+
+.widget-settings-icons {
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  border-bottom-left-radius: 10px;
+  padding: 5px;
+  float: right;
+  right: 15px;
+  top: 0px;
+}
+
+li {
+  border-top: 0 none;
+  border-left: 0 none;
+  border-right: 0 none;
+  border-bottom: 0 none;
+
+}
+
+.navbar-header, .navbar-brand {
+  margin-bottom: 0px;
+}
+
+a {
+  text-decoration: none !important;
+}
+
