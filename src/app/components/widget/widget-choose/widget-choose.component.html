@@ -1,0 +1,46 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="row container-fluid">
+    <div class="col-sm-12 col-xs-12">
+      <!--tick mark-->
+      <div class="navbar-brand pull-left left-margin-fix">
+        <a [routerLink]="['/component', componentId]"
+           class="navbar-link">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+      </div>
+      <!--heading on the nav bar-->
+      <p class="navbar-header pull-left">
+        <a class="navbar-brand ">
+          <b>Choose Widget</b>
+        </a>
+      </p>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container-fluid">
+
+  <ul class="list-group">
+    <a [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', 'new', 'heading']"
+       class="list-group-item">
+      Header
+    </a>
+    <a [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', 'new', 'image']"
+       class="list-group-item">
+      Image
+    </a>
+    <a [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', 'new', 'youtube']"
+       class="list-group-item">
+      Youtube
+    </a>
+    <a [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', 'new', 'html']"
+       class="list-group-item">
+      Html
+    </a>
+    <a [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', 'new', 'text']"
+       class="list-group-item">
+      Text
+    </a>
+  </ul>
+</div>

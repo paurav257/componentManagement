@@ -3,7 +3,6 @@ module.exports = function () {
 
   var sectionSchema = mongoose.Schema({
     name: String,
-    index: Number,
     _module: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ModuleModel"

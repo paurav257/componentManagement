@@ -32,7 +32,7 @@ module.exports = function (app, widgetModel) {
       'width': width
     };
     widget.url = '/assets/uploads/' + filename;
-    var callbackUrl = "/component';
+    var callbackUrl = '/component';
 
     if (widgetId === '') {
       widgetModel

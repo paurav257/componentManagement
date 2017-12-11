@@ -1,3 +1,59 @@
-<p>
-  component-edit works!
-</p>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="row container-fluid">
+    <div class="col-sm-12 col-xs-12">
+      <!--tick mark-->
+      <div class="navbar-brand pull-right right-margin-fix">
+        <a (click)="updateComponent()"
+           class="navbar-link">
+          <span class="glyphicon glyphicon-ok-sign"></span>
+        </a>
+      </div>
+      <!--tick mark-->
+      <div class="navbar-brand pull-left left-margin-fix">
+        <a [routerLink]="['/']"
+           class="navbar-link">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+      </div>
+      <!--heading on the nav bar-->
+      <p class="navbar-header pull-left">
+        <a class="navbar-brand ">
+          <b>Edit Components</b>
+        </a>
+      </p>
+    </div>
+  </div>
+</nav>
+
+<div class="row container-fluid ">
+    <div class="form-group">
+      <label for="componentName">
+        Name
+      </label>
+      <input [(ngModel)]="component['name']"
+             name="componentName"
+             required
+             type="text"
+             class="form-control mr-5"
+             id="componentName"
+             placeholder="Component Name">
+    </div>
+    <div class="form-group">
+      <label for="componentDesc">
+        Description
+      </label>
+      <textarea [(ngModel)]="component['description']"
+                name="componentDesc"
+                required
+                rows="5"
+                class="form-control mr-5"
+                id="componentDesc"
+                placeholder="Component Description"></textarea>
+    </div>
+    <div class="form-group">
+      <a class="btn btn-danger btn-block "
+         (click)="deleteComponent()">
+        Delete
+      </a>
+    </div>
+</div>

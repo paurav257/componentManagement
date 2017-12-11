@@ -4,6 +4,8 @@
 
 module.exports = function (app) {
   var model = require('./model/models.server')();
+  var componentService = require("./service/component.service.server");
+  componentService(app, model.componentModel);
   var userService = require("./service/user.service.server.js");
   userService(app, model.userModel);
   var moduleService = require("./service/module.service.server");

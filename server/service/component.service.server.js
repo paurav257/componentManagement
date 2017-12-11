@@ -1,6 +1,7 @@
 module.exports = function (app, componentModel) {
 
   app.post('/api/component', createComponent);
+  app.get('/api/component', findAllComponent)
   app.get('/api/component/:componentId', findComponentById);
   app.put('/api/component/:componentId', updateComponent);
   app.delete('/api/component/:componentId', deleteComponent);
@@ -49,6 +50,16 @@ module.exports = function (app, componentModel) {
       .deleteComponent(componentId)
       .then(function (resp) {
         res.sendStatus(200);
+      }, function (err) {
+        res.status(500).send(err);
+      });
+  }
+
+  function findAllComponent(req, res) {
+    componentModel
+      .findAllComponent()
+      .then(function (components) {
+        res.json(components);
       }, function (err) {
         res.status(500).send(err);
       });

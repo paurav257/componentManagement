@@ -45,7 +45,7 @@ module.exports = function (app, sectionModel) {
     var sectionId = req.param('sectionId');
     var section = req.body;
     sectionModel
-      .updateSection(pageId, section)
+      .updateSection(sectionId, section)
       .then(function (resp) {
         if(resp.ok === 1 && resp.n === 1) {
           res.sendStatus(200)

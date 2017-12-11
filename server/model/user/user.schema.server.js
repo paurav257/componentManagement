@@ -6,12 +6,9 @@ module.exports = function () {
     password: String,
     firstName: String,
     lastName: String,
+    admin: Boolean,
     email: String,
     phone: String,
-    websites: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "WebsiteModel"
-    }],
     dateCreated: {
       type: Date,
       default: Date.now()

@@ -12,12 +12,6 @@ module.exports = function (app, userModel) {
   var LocalStrategy = require('passport-local').Strategy;
   var FacebookStrategy = require('passport-facebook').Strategy;
 
-  passport.use(new LocalStrategy(localStrategy));
-  passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
-
-  passport.serializeUser(serializeUser);
-  passport.deserializeUser(deserializeUser);
-
   app.post('/api/login', passport.authenticate('local'), login);
   app.post('/api/logout', logout);
   app.post('/api/register', register);
@@ -34,6 +28,12 @@ module.exports = function (app, userModel) {
   app.get('/api/user/:userId', findUserById);
   app.put('/api/user/:userId', updateUser);
   app.delete('/api/user/:userId', deleteUser);
+
+  passport.use(new LocalStrategy(localStrategy));
+  passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
+
+  passport.serializeUser(serializeUser);
+  passport.deserializeUser(deserializeUser);
 
   function serializeUser(user, done) {
     done(null, user);
@@ -57,7 +57,7 @@ module.exports = function (app, userModel) {
       .findUserByUsername(username)
       .then(
         function (user) {
-          if (user.userName === username
+          if (user.email === username
             && bcrypt.compareSync(password, user.password)) {
             return done(null, user);
           } else {

@@ -19,13 +19,15 @@ module.exports = function () {
     model = _model;
   }
 
-  function createSection(moduleId,_section) {
+  function createSection(moduleId, _section) {
     return SectionModel
       .create(_section)
       .then(function (section) {
         return model.moduleModel
           .findModuleById(moduleId)
           .then(function (_module) {
+            console.log(moduleId);
+            console.log(_module);
             _module.sections.push(section._id);
             section._module = _module._id;
             _module.save();
@@ -100,6 +102,30 @@ module.exports = function () {
         module.sections.splice(end, 0, module.sections.splice(start, 1)[0]);
         module.save();
         return 200;
+      }, function (err) {
+        return err;
+      });
+  }
+
+  function recursiveDelete(widgetsOfSection, sectionId){
+    if (widgetsOfSection.length === 0) {
+      return SectionModel
+        .remove({_id: sectionId})
+        .then(function (response) {
+          if (response.result.n === 1 && response.result.ok === 1) {
+            return response;
+          }
+        }, function (err) {
+          return err;
+        });
+    }
+
+    return model.widgetModel
+      .deleteWidgetOfSection(widgetsOfSection.shift())
+      .then(function (response) {
+        if (response.result.n === 1 && response.result.ok === 1) {
+          return recursiveDelete(widgetsOfSection, sectionId);
+        }
       }, function (err) {
         return err;
       });

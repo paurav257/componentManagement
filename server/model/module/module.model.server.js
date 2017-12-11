@@ -18,8 +18,24 @@ module.exports = function () {
     model = _model;
   }
 
-  function createModule(_module){
-    return ModuleModel.create(_module);
+  function createModule(componentId, _module) {
+    return ModuleModel
+      .create(_module)
+      .then(function (module) {
+        return model.componentModel
+          .findComponentById(componentId)
+          .then(function (_component) {
+            _component.modules.push(module._id);
+            module._component = _module._id;
+            _component.save();
+            module.save();
+            return module;
+          }, function (err) {
+            return err;
+          });
+      }, function (err) {
+        return err;
+      });
   }
 
   function getSectionsRecursively(numberOfModules,
@@ -31,8 +47,8 @@ module.exports = function () {
     return ModuleModel
       .findModuleById(modulesOfComponent.shift())
       .select('-__v')
-      .then(function (section) {
-        moduleCollectionForComponent.push(section);
+      .then(function (module) {
+        moduleCollectionForComponent.push(module);
         return getSectionsRecursively(--numberOfModules,
           modulesOfComponent, moduleCollectionForComponent);
       }, function (err) {

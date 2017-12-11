@@ -14,41 +14,71 @@
 
 
       <ul class="nav navbar-nav  navbar-right">
-        <li ng-show="!currentUser"><a [routerLink]="['login']">Login</a></li>
-        <li ng-show="currentUser"><a ng-click="model.logout()">Logout</a></li>
-        <li ng-show="!currentUser"><a [routerLink]="['register']">Register</a></li>
+        <li *ngIf="!currentUser"><a [routerLink]="['login']">Login</a></li>
+        <li *ngIf="currentUser"><a (click)="logout()">Logout</a></li>
+        <li *ngIf="!currentUser"><a [routerLink]="['register']">Register</a></li>
       </ul>
     </div>
   </div>
 </nav>
+
 <div class="jumbotron">
   <div class="container">
-<p>
-  Some content
-</p>
+    <p>
+      Some content
+    </p>
     <h2>Manage</h2>
     <h1>Your Content</h1>
   </div>
 </div>
 
-<div class="container">
+<div *ngIf="currentUser.admin">
+  <div class="container">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <a>
+          Components
+        </a>
+        <a [routerLink]="['/component', 'new']"
+           class="pull-right">
+          <span class="glyphicon glyphicon-plus-sign"></span>
+        </a>
+      </li>
+      <div *ngFor="let component of components">
+        <li class="list-group-item">
+          <a [routerLink]="['/component', component['_id'] ]">
+            {{component['name']}}
+          </a>
+          <a [routerLink]="['/component', component['_id'], 'edit']"
+             class="pull-right">
+            <span class="glyphicon glyphicon-cog"></span>
+          </a>
 
-  <h1>
-    Angular 4 MEAN stack app
-  </h1>
+        </li>
+      </div>
+    </ul>
+  </div>
+</div>
 
-
-  <h3>
-    App works
-  </h3>
-
-
-  <h4>
-    <a href="test">Test MongoDB</a>
-  </h4>
-
+<div *ngIf="!currentUser.admin">
+  <div class="container">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <a>
+          Components
+        </a>
+      </li>
+      <div *ngFor="let component of components">
+        <li class="list-group-item">
+          <a [routerLink]="['/component', component['_id'] ]">
+            {{component['name']}}
+          </a>
+        </li>
+      </div>
+    </ul>
+  </div>
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
-    <p class="align- text-center">&copy; Copyright</p>
+  <p class="align- text-center">&copy; Norteastern University | College of Computer and Information Science</p>
 </nav>

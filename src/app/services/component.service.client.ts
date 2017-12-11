@@ -13,6 +13,17 @@ export class ComponentService {
 
   baseUrl = environment.baseUrl;
 
+  findAllComponent() {
+    const url = this.baseUrl + '/api/component';
+    return this.http.get(url)
+      .map(
+        (res: Response) => {
+          const data = res.json();
+          return data;
+        }
+      );
+  }
+
   createComponent(component) {
     const url = this.baseUrl + '/api/component';
     return this.http.post(url, component)
@@ -52,18 +63,6 @@ export class ComponentService {
       .map(
         (res: Response) => {
           const data = res.status;
-          return data;
-        }
-      );
-  }
-
-  updateComponentPosition(componentId, initial, final) {
-    const url = this.baseUrl + '/api/component/' + componentId + '/component?initial='
-      + initial + '&final=' + final;
-    return this.http.put(url, null)
-      .map(
-        (res: Response) => {
-          const data = res.json();
           return data;
         }
       );

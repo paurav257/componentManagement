@@ -22,6 +22,17 @@ import { SectionService } from './services/section.service.client';
 import { WidgetService } from './services/widget.service.client';
 import { ComponentNewComponent } from './components/component/component-new/component-new.component';
 import { ComponentEditComponent } from './components/component/component-edit/component-edit.component';
+import { QuillEditorModule } from 'ngx-quill-editor';
+import { ComponentService } from './services/component.service.client';
+import { ComponentViewComponent } from './components/component/component-view/component-view.component';
+import { WidgetChooseComponent } from './components/widget/widget-choose/widget-choose.component';
+import { WidgetEditComponent } from './components/widget/widget-edit/widget-edit.component';
+import { WidgetHeadingComponent } from './components/widget/widget-edit/widget-heading/widget-heading.component';
+import { WidgetHtmlComponent } from './components/widget/widget-edit/widget-html/widget-html.component';
+import { WidgetYoutubeComponent } from './components/widget/widget-edit/widget-youtube/widget-youtube.component';
+import { WidgetTextComponent } from './components/widget/widget-edit/widget-text/widget-text.component';
+import { SortableDirective } from './directives/sortable.directive';
+import { xSortableDirective } from './directives/xsortable.directive';
 
 @NgModule({
   // Declare components here
@@ -36,16 +47,26 @@ import { ComponentEditComponent } from './components/component/component-edit/co
     SectionNewComponent,
     SectionEditComponent,
     ComponentNewComponent,
-    ComponentEditComponent
+    ComponentEditComponent,
+    ComponentViewComponent,
+    WidgetChooseComponent,
+    WidgetEditComponent,
+    WidgetHeadingComponent,
+    WidgetHtmlComponent,
+    WidgetYoutubeComponent,
+    WidgetTextComponent,
+    SortableDirective,
+    xSortableDirective
   ],
   imports: [
     BrowserModule,
     HttpModule,
     FormsModule,
-    Routing
+    Routing,
+    QuillEditorModule
   ],
   // Client Side services here
-  providers: [TestService, AuthGuard, SharedService, UserService, ModuleService, SectionService, WidgetService],
+  providers: [TestService, AuthGuard, SharedService, UserService, ModuleService, SectionService, WidgetService, ComponentService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

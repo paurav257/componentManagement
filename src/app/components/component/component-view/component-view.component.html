@@ -1,0 +1,324 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <div class="navbar-brand pull-left">
+        {{component['name']}}
+      </div>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+              aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">&nbsp;</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+
+
+      <ul class="nav navbar-nav  navbar-right">
+        <li *ngIf="!currentUser"><a [routerLink]="['login']">Login</a></li>
+        <li *ngIf="currentUser"><a (click)="logout()">Logout</a></li>
+        <li *ngIf="!currentUser"><a [routerLink]="['register']">Register</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div *ngIf="currentUser.admin">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        Modules
+          <a [routerLink]="['/component',componentId, 'module', 'new']"
+             class="pull-right">
+            <span class="glyphicon glyphicon-plus-sign"></span>
+          </a>
+          <ul class="nav nav-sidebar" appYSortable (newIndexes)="updateModulePosition($event)">
+            <li *ngFor="let module of modules; let i=index" [ngClass]="{'active' : moduleIndex == i}">
+              <a (click)="selectModule(i)">{{module['name']}}</a>
+              <div class="scroll-settings-icons">
+                <a [routerLink]="['/component',componentId, 'module', module['_id']]">
+                  <span class="glyphicon glyphicon-cog"></span>
+                </a>
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+              </div>
+            </li>
+          </ul>
+      </div>
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="row">
+          <div class="col-sm-12">
+            <h1>{{module['name']}}</h1>
+            <ul class="nav nav-tabs" appXSortable (newIndexes)="updateSectionPosition($event)">
+              <li *ngFor="let section of sections; let i=index" [ngClass]="{'active' : sectionIndex == i}">
+                <a (click)="selectSection(i)">{{section['name']}}</a>
+                <div class="scroll-settings-icons">
+                  <a [routerLink]="['/component',componentId, 'module', module['_id'], 'section', section['_id']]">
+                    <span class="glyphicon glyphicon-cog"></span>
+                  </a>
+                  <span class="glyphicon glyphicon-menu-hamburger"></span>
+                </div>
+              </li>
+              <li>
+                <a [routerLink]="['/component',componentId, 'module', module['_id'], 'section', 'new']">
+                  <span class="glyphicon glyphicon-plus-sign"></span>
+                </a>
+              </li>
+            </ul>
+            <button class="btn btn-primary btn-block"
+                    [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', 'new']">
+              New Widget
+            </button>
+            <ul class="list-group" appYSortable (newIndexes)="updateWidgetPosition($event)">
+              <div *ngFor="let widget of widgets">
+                <div *ngIf="widget">
+                  <div [ngSwitch]="widget['type']">
+
+                    <div *ngSwitchCase="'HEADING'">
+                      <div class="row">
+                        <!--<li class="list-group-item">-->
+                        <div class="col-xs-12">
+                          <div [ngSwitch]="widget['size']">
+                            <div *ngSwitchCase="1">
+                              <h1>{{widget['text']}}</h1>
+                            </div>
+                            <div *ngSwitchCase="2">
+                              <h2>{{widget['text']}}</h2>
+                            </div>
+                            <div *ngSwitchCase="3">
+                              <h3>{{widget['text']}}</h3>
+                            </div>
+                            <div *ngSwitchCase="4">
+                              <h4>{{widget['text']}}</h4>
+                            </div>
+                          </div>
+                          <div class="scroll-settings-icons">
+                            <a
+                              [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', widget['_id']]">
+                              <span class="glyphicon glyphicon-cog"></span>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-hamburger"></span>
+                          </div>
+                        </div>
+                        <!--</li>-->
+                      </div>
+                    </div>
+
+                    <div *ngSwitchCase="'YOUTUBE'">
+                      <div class="row">
+                        <!--<li class="list-group-item">-->
+                        <div class="col-xs-12" class="youtube-widget">
+                          <iframe [width]="widget['width']"
+                                  height="300"
+                                  [src]="safeUrl(widget['url'])">
+                          </iframe>
+                          <div class="scroll-settings-icons">
+                            <a
+                              [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', widget['_id']]">
+                              <span class="glyphicon glyphicon-cog"></span>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-hamburger"></span>
+                          </div>
+                        </div>
+                        <!--</li>-->
+                      </div>
+                    </div>
+
+                    <!--<div *ngSwitchCase="'IMAGE'">-->
+                    <!--<div class="row">-->
+                    <!--&lt;!&ndash;<li class="list-group-item">&ndash;&gt;-->
+                    <!--<div class="col-xs-12">-->
+                    <!--<a [routerLink]="['/user', userId, 'website', websiteId, 'page', pageId, 'widget']" class="thumbnail">-->
+                    <!--<img [style.width]="widget['width']"-->
+                    <!--[src]="safeUrl(widget['url'])">-->
+                    <!--</a>-->
+                    <!--<div class="scroll-settings-icons">-->
+                    <!--<a [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', widget['_id']]">-->
+                    <!--<span class="glyphicon glyphicon-cog"></span>-->
+                    <!--</a>-->
+                    <!--<span class="glyphicon glyphicon-menu-hamburger"></span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <div *ngSwitchCase="'HTML'">
+                      <div class="row">
+                        <!--<li class="list-group-item">-->
+                        <div class="col-xs-12">
+                          <div [innerHTML]="widget['text']">
+                          </div>
+                          <div class="scroll-settings-icons">
+                            <a
+                              [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', widget['_id']]">
+                              <span class="glyphicon glyphicon-cog"></span>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-hamburger"></span>
+                          </div>
+                        </div>
+                        <!--</li>-->
+                      </div>
+                    </div>
+
+                    <div *ngSwitchCase="'TEXT'">
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <!--<li class="list-group-item">-->
+                          <div *ngIf="widget['formatted']">
+                            <quill-editor [(ngModel)]="widget['text']" name="text"></quill-editor>
+                          </div>
+
+                          <input *ngIf="!widget.formatted && (!widget['rows ']|| widget['rows']===1)"
+                                 placeholder="{{widget['placeholder']}}" class="form-control"/>
+
+                          <textarea *ngIf="!widget['formatted'] && (widget['rows'] > 1)"
+                                    rows="{{widget['rows']}}" placeholder="{{widget['placeholder']}}"
+                                    class="form-control">{{widget['text']}}</textarea>
+                          <div class="scroll-settings-icons">
+                            <a
+                              [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', widget['_id']]">
+                              <span class="glyphicon glyphicon-cog"></span>
+                            </a>
+                            <span class="glyphicon glyphicon-menu-hamburger"></span>
+                          </div>
+                          <!--</li>-->
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!currentUser.admin">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        Modules
+        <ul class="nav nav-sidebar">
+          <li *ngFor="let module of modules; let i=index" [ngClass]="{'active' : moduleIndex == i}">
+            <a (click)="selectModule(i)">{{module['name']}}</a>
+          </li>
+        </ul>
+      </div>
+
+
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="row">
+          <div class="col-sm-12">
+            <h1>{{module['name']}}</h1>
+            <ul class="nav nav-tabs">
+              <li *ngFor="let section of sections; let i=index" [ngClass]="{'active' : sectionIndex == i}">
+                <a (click)="selectSection(i)">{{section['name']}}</a>
+              </li>
+            </ul>
+            <ul class="list-group">
+              <div *ngFor="let widget of widgets">
+                <div *ngIf="widget">
+                  <div [ngSwitch]="widget['type']">
+
+                    <div *ngSwitchCase="'HEADING'">
+                      <div class="row">
+                        <!--<li class="list-group-item">-->
+                        <div class="col-xs-12">
+                          <div [ngSwitch]="widget['size']">
+                            <div *ngSwitchCase="1">
+                              <h1>{{widget['text']}}</h1>
+                            </div>
+                            <div *ngSwitchCase="2">
+                              <h2>{{widget['text']}}</h2>
+                            </div>
+                            <div *ngSwitchCase="3">
+                              <h3>{{widget['text']}}</h3>
+                            </div>
+                            <div *ngSwitchCase="4">
+                              <h4>{{widget['text']}}</h4>
+                            </div>
+                          </div>
+                        </div>
+                        <!--</li>-->
+                      </div>
+                    </div>
+
+                    <div *ngSwitchCase="'YOUTUBE'">
+                      <div class="row">
+                        <!--<li class="list-group-item">-->
+                        <div class="col-xs-12" class="youtube-widget">
+                          <iframe [width]="widget['width']"
+                                  height="300"
+                                  [src]="safeUrl(widget['url'])">
+                          </iframe>
+                        </div>
+                        <!--</li>-->
+                      </div>
+                    </div>
+
+                    <!--<div *ngSwitchCase="'IMAGE'">-->
+                    <!--<div class="row">-->
+                    <!--&lt;!&ndash;<li class="list-group-item">&ndash;&gt;-->
+                    <!--<div class="col-xs-12">-->
+                    <!--<a [routerLink]="['/user', userId, 'website', websiteId, 'page', pageId, 'widget']" class="thumbnail">-->
+                    <!--<img [style.width]="widget['width']"-->
+                    <!--[src]="safeUrl(widget['url'])">-->
+                    <!--</a>-->
+                    <!--<div class="scroll-settings-icons">-->
+                    <!--<a [routerLink]="['/component', componentId, 'module', moduleId, 'section', sectionId, 'widget', widget['_id']]">-->
+                    <!--<span class="glyphicon glyphicon-cog"></span>-->
+                    <!--</a>-->
+                    <!--<span class="glyphicon glyphicon-menu-hamburger"></span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <div *ngSwitchCase="'HTML'">
+                      <div class="row">
+                        <!--<li class="list-group-item">-->
+                        <div class="col-xs-12">
+                          <div [innerHTML]="widget['text']">
+                          </div>
+                        </div>
+                        <!--</li>-->
+                      </div>
+                    </div>
+
+                    <div *ngSwitchCase="'TEXT'">
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <!--<li class="list-group-item">-->
+                          <div *ngIf="widget['formatted']">
+                            <quill-editor [(ngModel)]="widget['text']" name="text"></quill-editor>
+                          </div>
+
+                          <input *ngIf="!widget.formatted && (!widget['rows ']|| widget['rows']===1)"
+                                 placeholder="{{widget['placeholder']}}" class="form-control"/>
+
+                          <textarea *ngIf="!widget['formatted'] && (widget['rows'] > 1)"
+                                    rows="{{widget['rows']}}" placeholder="{{widget['placeholder']}}"
+                                    class="form-control">{{widget['text']}}</textarea>
+                          <!--</li>-->
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

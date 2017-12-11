@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import 'rxjs/Rx';
-import {Http, Response} from '@angular/http';
-import {environment} from '../../environments/environment';
+import { Http, Response } from '@angular/http';
+import { environment } from '../../environments/environment';
 
 // injecting service into module
 @Injectable()
@@ -13,8 +13,8 @@ export class ModuleService {
 
   baseUrl = environment.baseUrl;
 
-  createModule(module) {
-    const url = this.baseUrl + '/api/module';
+  createModule(componentId, module) {
+    const url = this.baseUrl + '/api/component/' + componentId + '/module';
     return this.http.post(url, module)
       .map(
         (res: Response) => {

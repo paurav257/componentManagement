@@ -1,4 +1,4 @@
-component.exports = function () {
+module.exports = function () {
   var model;
   var mongoose = require("mongoose");
   var ComponentSchema = require("./component.schema.server")();
@@ -9,6 +9,7 @@ component.exports = function () {
   ComponentModel.findComponentById = findComponentById;
   ComponentModel.updateComponent = updateComponent;
   ComponentModel.deleteComponent = deleteComponent;
+  ComponentModel.findAllComponent = findAllComponent;
 
   return ComponentModel;
 
@@ -61,5 +62,9 @@ component.exports = function () {
       }, function (err) {
         return err;
       });
+  }
+
+  function findAllComponent(){
+   return ComponentModel.find({});
   }
 };

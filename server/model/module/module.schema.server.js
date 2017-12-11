@@ -2,12 +2,11 @@ module.exports = function () {
   var mongoose = require("mongoose");
 
   var moduleSchema = mongoose.Schema({
+    name: String,
     _component: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ComponentModel"
     },
-    name: String,
-    index: Number,
     sections: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "SectionModel"

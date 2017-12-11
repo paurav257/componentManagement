@@ -14,9 +14,8 @@
 
 
       <ul class="nav navbar-nav  navbar-right">
-        <li ng-show="!currentUser"><a [routerLink]="['login']">Login</a></li>
-        <li ng-show="currentUser"><a ng-click="model.logout()">Logout</a></li>
-        <li ng-show="!currentUser"><a [routerLink]="['register']">Register</a></li>
+        <li><a [routerLink]="['/login']">Login</a></li>
+        <li><a [routerLink]="['/register']">Register</a></li>
       </ul>
     </div>
   </div>
@@ -26,6 +25,10 @@
     <div class="col-md-2"></div>
     <div class="col-md-8">
       <h1>LogIn</h1>
+      <div *ngIf="errorFlag"
+           class="alert alert-danger">
+        {{errorMsg}}
+      </div>
       <form (ngSubmit)="login()" #f="ngForm">
         <div class="form-group">
           <input name="email"

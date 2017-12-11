@@ -8,9 +8,10 @@ module.exports = function (app, moduleModel) {
   app.delete('/api/module/:moduleId', deleteModule);
 
   function createModule(req, res) {
+    var componentId = req.param('componentId');
     var module = req.body;
     moduleModel
-      .createModule(module)
+      .createModule(componentId, module)
       .then(function (module) {
         res.json(module);
       }, function (err) {
